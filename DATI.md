@@ -5,14 +5,21 @@ recensioni, certificazioni o servizi che qui non ci sono.
 
 - **Ragione sociale**: Athena Trasporti di Ardito Jacopo Joe (ditta individuale)
 - **P.IVA**: 09546240962 — va nel piè di pagina, per legge
-- **Sede da mostrare**: Limbiate (MB). NON mettere via e civico
+- **Sede da mostrare**: Limbiate (MB). NON mettere via e civico: la sede è anche la casa del titolare
 - **Titolare**: Jacopo Joe Ardito, **gestore dei trasporti** con capacità
   professionale per il trasporto merci su strada **nazionale e internazionale**
 - **Servizi**: consegne conto terzi · consegne urgenti · sgomberi
-- **Dove**: in tutta Italia (servizio nazionale)
+- **Dove**: la zona principale è **Limbiate e dintorni**. In tutta Italia
+  **su richiesta**: più è lontano, più sale la tariffa — sempre con preventivo.
+  Il sito deve dire questo, non «ovunque allo stesso prezzo»
 - **Mezzi**: un furgone grande (Mercedes Sprinter, tetto alto) e una Fiat Panda
   per le consegne piccole e rapide. Nel testo non scrivere portate o volumi:
   non li abbiamo verificati
+- **Milano città**: lo Sprinter è **Euro 5 diesel e non entra a Milano**
+  (limiti alle emissioni). A Milano le consegne si fanno **con la Panda**,
+  quindi **solo carichi piccoli**. Il sito non deve mai far pensare che il
+  furgone grande vada in città; va detto con chiarezza, per esempio nella
+  sezione dei mezzi o della zona
 - **Telefono e WhatsApp**: 377 594 7995 (internazionale: +39 377 594 7995)
 - **Mail**: jja.athenatrasporti@gmail.com
 - **A chi parla il sito**: aziende e committenti che cercano un trasportatore
