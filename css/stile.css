@@ -353,3 +353,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 /* i dati della fattura (27 settembre) */
 .dati-azienda { display: grid; gap: 10px; }
 .dati-azienda[hidden] { display: none; }
+
+/* il bonifico per chi non ha PayPal (27 settembre) */
+.prenota-bonifico { display: grid; gap: 6px; border-top: 1px solid rgba(20, 20, 20, .15); padding-top: 10px; margin-top: 4px; }
+.prenota-bonifico[hidden] { display: none; }

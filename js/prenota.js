@@ -34,8 +34,8 @@
     stato.textContent = "";
     document.getElementById("paga-titolo").textContent = "Giorno bloccato: " + leggibile(x.giorno) + ", " + x.fascia;
     document.getElementById("paga-cosa").textContent = x.tutto
-      ? "Per confermarlo paga " + x.caparra + " € (l'intero importo) con PayPal."
-      : "Per confermarlo paga la caparra di " + x.caparra + " € con PayPal. Il resto (" + (dati.prezzo - x.caparra) + " €) si paga prima dello scarico.";
+      ? "Per confermarlo paga " + x.caparra + " € (l'intero importo)" + (x.iban ? ", con PayPal o bonifico." : " con PayPal.")
+      : "Per confermarlo paga la caparra di " + x.caparra + " €" + (x.iban ? ", con PayPal o bonifico." : " con PayPal.") + " Il resto (" + (dati.prezzo - x.caparra) + " €) si paga prima dello scarico.";
     document.getElementById("paga-mail").textContent = x.paypal;
     document.getElementById("paga-causale").textContent = x.causale;
     document.getElementById("paga-regole").textContent = x.tutto ? "" :
@@ -45,6 +45,18 @@
       (navigator.clipboard ? navigator.clipboard.writeText(x.paypal) : Promise.reject())
         .then(function () { b.textContent = "Copiato"; }, function () { b.textContent = "Tieni premuto l'indirizzo"; });
     };
+    // JJ, 27 settembre: «se non hanno pay pal non possono pagarmi… serve un
+    // metodo alternativo». Il bonifico, sullo stesso IBAN delle aziende.
+    var bon = document.getElementById("bonifico");
+    bon.hidden = !x.iban;
+    if (x.iban) {
+      document.getElementById("paga-iban").textContent = x.iban;
+      document.getElementById("copia-iban").onclick = function () {
+        var b = this;
+        (navigator.clipboard ? navigator.clipboard.writeText(x.iban.replace(/\s/g, "")) : Promise.reject())
+          .then(function () { b.textContent = "Copiato"; }, function () { b.textContent = "Tieni premuto l'IBAN"; });
+      };
+    }
     document.getElementById("pagamento").hidden = false;
   }
 
