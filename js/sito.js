@@ -180,7 +180,7 @@
 
   function versoWhatsApp(d, prima) {
     var righe = ["Buongiorno, vorrei un preventivo."];
-    [["servizio", "Servizio"], ["da", "Da"], ["a", "A"], ["quando", "Quando"], ["note", "Note"], ["nome", "Nome"]].forEach(function (c) {
+    [["servizio", "Servizio"], ["da", "Da"], ["tappe", "Tappe"], ["a", "A"], ["quando", "Quando"], ["note", "Note"], ["nome", "Nome"]].forEach(function (c) {
       var v = String(d.get(c[0]) || "").trim();
       if (v) righe.push(c[1] + ": " + v);
     });
@@ -202,7 +202,7 @@
       var tel = String(d.get("telefono") || "").trim(), mail = String(d.get("mail") || "").trim();
       if (!tel && !mail) { esito.textContent = "Lascia un telefono o una mail: serve per mandarti il prezzo."; return; }
       var corpo = { consenso: d.get("consenso") === "on" };
-      ["servizio", "da", "a", "quando", "note", "nome", "telefono", "mail", "sito"].forEach(function (k) { corpo[k] = String(d.get(k) || ""); });
+      ["servizio", "da", "a", "tappe", "quando", "note", "nome", "telefono", "mail", "sito"].forEach(function (k) { corpo[k] = String(d.get(k) || ""); });
       var pulsante = modulo.querySelector("button[type=submit]");
       pulsante.disabled = true;
       esito.textContent = "Invio in corso…";
