@@ -25,6 +25,18 @@ recensioni, certificazioni o servizi che qui non ci sono.
 - **A chi parla il sito**: aziende e committenti che cercano un trasportatore
   affidabile per appalti e consegne continuative; privati per urgenze e sgomberi
 
+## JJA-VIS
+
+Il titolare sviluppa **JJA-VIS**, un assistente personale; il sito della ditta
+è anche la sua prima commissione. Pagina: https://jjoeboy93.github.io/JJA-VIS/
+
+- **nel piè di pagina**: «Sito realizzato da JJA-VIS», con il link alla pagina
+  (un link normale: si apre quando lo si tocca, non carica niente prima)
+- **nella sezione «perché affidarsi»**, una riga sola: il titolare organizza il
+  lavoro con JJA-VIS, l'assistente che sviluppa lui stesso. **Non promettere
+  funzioni** (avvisi al destinatario, tracciamento, orari in tempo reale):
+  oggi non ci sono per i clienti della ditta
+
 ## Le immagini in `img/`
 
 - `logo.png` — logo completo, fondo trasparente: **solo su fondi chiari**
