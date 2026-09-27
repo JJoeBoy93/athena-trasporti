@@ -53,8 +53,8 @@ Il titolare sviluppa **JJA-VIS**, un assistente personale; il sito della ditta
   https://www.instagram.com/athenatrasporti/ — JJ: «le pagine devono
   scoppiare di follower». È l'unico link esterno aggiunto oltre a JJA-VIS;
   `controlli/verifica.py` ammette solo questo indirizzo esatto
-- **Condividi**: tastino tondo in alto a destra nella Home e blocco
-  «Consiglia Athena Trasporti» nei Contatti. JJ: «manca il tasto per
+- **Condividi**: solo il blocco «Consiglia Athena Trasporti» nei Contatti
+  (JJ: «meglio nei contatti che nella home»; il tastino in Home è stato tolto). JJ: «manca il tasto per
   condividere il link se vogliono mandarlo a qualcuno o se vogliono
   sponsorizzarmi». Sul telefono apre il menu di condivisione del sistema;
   dove non c'è, copia il link
