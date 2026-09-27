@@ -317,3 +317,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .anima .strada-oro { opacity: 0; }
   .parte .mini-furgone { transform: none; opacity: 1; }
 }
+
+/* il consenso e la trappola per i robot (27 settembre) */
+.consenso { display: flex; gap: 8px; align-items: flex-start; font-size: .9rem; line-height: 1.35; }
+.consenso input { margin-top: 3px; width: 18px; height: 18px; flex: none; }
+.trappola { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.modulo button[disabled] { opacity: .6; }

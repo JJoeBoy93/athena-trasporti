@@ -210,7 +210,7 @@
 <section class="scheda" id="preventivo" aria-labelledby="preventivo-titolo">
   <div class="dentro">
     <h2 id="preventivo-titolo">Richiedi un preventivo</h2>
-    <p class="spiega">Compila: si apre WhatsApp con il messaggio pronto, lo controlli e lo invii tu.</p>
+    <p class="spiega">Compila: controllo io il percorso e ti mando il prezzo su WhatsApp o per mail, prima di partire.</p>
 
     <form class="modulo" id="modulo" action="mailto:jja.athenatrasporti@gmail.com" method="post" enctype="text/plain">
       <fieldset class="scelte">
@@ -233,11 +233,24 @@
       <label class="campo">Note
         <textarea name="note" rows="2" placeholder="Cosa c'è da trasportare, piani, ingombri…"></textarea>
       </label>
+      <label class="campo">Il tuo nome
+        <input type="text" name="nome" autocomplete="name" required>
+      </label>
+      <div class="campi-due">
+        <label class="campo">Telefono (WhatsApp)
+          <input type="tel" name="telefono" autocomplete="tel" inputmode="tel" placeholder="es. 333 123 4567">
+        </label>
+        <label class="campo">oppure mail
+          <input type="email" name="mail" autocomplete="email">
+        </label>
+      </div>
+      <label class="consenso"><input type="checkbox" name="consenso" required> <span>Usate i miei dati solo per mandarmi questo preventivo.</span></label>
+      <label class="trappola" aria-hidden="true">Sito <input type="text" name="sito" tabindex="-1" autocomplete="off"></label>
 
-      <noscript><p class="nota-nojs">JavaScript è disattivato: il pulsante apre la tua mail con i dati del modulo, al posto di WhatsApp.</p></noscript>
+      <noscript><p class="nota-nojs">JavaScript è disattivato: il pulsante apre la tua mail con i dati del modulo.</p></noscript>
 
       <div class="invio">
-        <button type="submit" class="pulsante pulsante-oro">Apri il messaggio su WhatsApp</button>
+        <button type="submit" class="pulsante pulsante-oro">Chiedi il preventivo</button>
         <svg class="strada-mini" viewBox="0 0 480 44" aria-hidden="true" focusable="false">
           <line x1="0" y1="40" x2="480" y2="40" class="mini-linea"/>
           <g class="mini-furgone"><use href="#furgone-disegno" transform="translate(40 36) scale(.34)"/></g>

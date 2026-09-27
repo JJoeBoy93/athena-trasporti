@@ -1,5 +1,5 @@
 /* Athena Trasporti — le schede, il furgone sulla strada e il modulo del preventivo.
-   Niente richieste a server: il modulo compone il messaggio e apre WhatsApp. */
+   Il modulo manda la richiesta alla porta di JJA-VIS; se non risponde, apre WhatsApp. */
 (function () {
   "use strict";
 
@@ -167,33 +167,62 @@
     vai(partenza < 0 ? 0 : partenza, true);
   }
 
-  /* ---------- Il preventivo: compone il messaggio e apre WhatsApp ---------- */
+  /* ---------- Il preventivo ----------
+     27 settembre 2026: la richiesta va alla porta di JJA-VIS, che calcola il
+     percorso e la manda a JJ su Telegram; il prezzo al cliente lo manda JJ,
+     dopo averlo controllato. Il sito non vede mai un prezzo.
+     Se la porta non risponde, si apre WhatsApp col messaggio pronto come
+     prima: un cliente non si perde per un server giù. */
   var modulo = document.getElementById("modulo");
   var esito = document.getElementById("esito");
   var NUMERO = "393775947995";
+  var PORTA = "https://jjavis-porta.19-jjardito93.workers.dev/preventivo";
+
+  function versoWhatsApp(d, prima) {
+    var righe = ["Buongiorno, vorrei un preventivo."];
+    [["servizio", "Servizio"], ["da", "Da"], ["a", "A"], ["quando", "Quando"], ["note", "Note"], ["nome", "Nome"]].forEach(function (c) {
+      var v = String(d.get(c[0]) || "").trim();
+      if (v) righe.push(c[1] + ": " + v);
+    });
+    var url = "https://wa.me/" + NUMERO + "?text=" + encodeURIComponent(righe.join("\n"));
+    esito.textContent = prima + "Si sta aprendo WhatsApp… Se non si apre, ";
+    var a = document.createElement("a");
+    a.href = url;
+    a.className = "collegamento";
+    a.textContent = "tocca qui";
+    esito.appendChild(a);
+    esito.appendChild(document.createTextNode("."));
+    setTimeout(function () { window.location.href = url; }, ridotto.matches ? 0 : 800);
+  }
 
   if (modulo) {
     modulo.addEventListener("submit", function (e) {
       e.preventDefault();
       var d = new FormData(modulo);
-      var righe = ["Buongiorno, vorrei un preventivo."];
-      [["servizio", "Servizio"], ["da", "Da"], ["a", "A"], ["quando", "Quando"], ["note", "Note"]].forEach(function (c) {
-        var v = String(d.get(c[0]) || "").trim();
-        if (v) righe.push(c[1] + ": " + v);
-      });
-      var url = "https://wa.me/" + NUMERO + "?text=" + encodeURIComponent(righe.join("\n"));
-
-      esito.textContent = "Si sta aprendo WhatsApp… Se non si apre, ";
-      var a = document.createElement("a");
-      a.href = url;
-      a.className = "collegamento";
-      a.textContent = "tocca qui";
-      esito.appendChild(a);
-      esito.appendChild(document.createTextNode("."));
-
-      if (ridotto.matches) { window.location.href = url; return; }
-      modulo.classList.add("parte");   // il furgone parte…
-      setTimeout(function () { window.location.href = url; }, 800);   // …e dopo 0,8 s si apre WhatsApp
+      var tel = String(d.get("telefono") || "").trim(), mail = String(d.get("mail") || "").trim();
+      if (!tel && !mail) { esito.textContent = "Lascia un telefono o una mail: serve per mandarti il prezzo."; return; }
+      var corpo = { consenso: d.get("consenso") === "on" };
+      ["servizio", "da", "a", "quando", "note", "nome", "telefono", "mail", "sito"].forEach(function (k) { corpo[k] = String(d.get(k) || ""); });
+      var pulsante = modulo.querySelector("button[type=submit]");
+      pulsante.disabled = true;
+      esito.textContent = "Invio in corso…";
+      if (!ridotto.matches) modulo.classList.add("parte");   // il furgone parte…
+      fetch(PORTA, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corpo) })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { r: r, j: j }; }); })
+        .then(function (x) {
+          pulsante.disabled = false;
+          if (x.r.ok) {
+            esito.textContent = "Richiesta arrivata, grazie. Controllo il percorso e ti mando il prezzo " +
+              (tel ? "su WhatsApp" : "per mail") + ".";
+            modulo.reset();
+          } else if (x.r.status === 400 && x.j.errore) {
+            modulo.classList.remove("parte");
+            esito.textContent = "Manca qualcosa: " + x.j.errore + ".";
+          } else {
+            versoWhatsApp(d, "Il modulo non è arrivato. ");
+          }
+        })
+        .catch(function () { pulsante.disabled = false; versoWhatsApp(d, "Il modulo non è arrivato. "); });
     });
 
     // tornando indietro dal WhatsApp, il furgone è di nuovo al suo posto
