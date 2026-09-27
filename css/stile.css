@@ -323,3 +323,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .consenso input { margin-top: 3px; width: 18px; height: 18px; flex: none; }
 .trappola { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .modulo button[disabled] { opacity: .6; }
+
+/* ingombro: le scelte spente con lo sgombero */
+.scelte input:disabled + span { opacity: .35; }

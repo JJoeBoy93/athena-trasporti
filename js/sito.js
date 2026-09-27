@@ -180,7 +180,7 @@
 
   function versoWhatsApp(d, prima) {
     var righe = ["Buongiorno, vorrei un preventivo."];
-    [["servizio", "Servizio"], ["da", "Da"], ["tappe", "Tappe"], ["a", "A"], ["quando", "Quando"], ["note", "Note"], ["nome", "Nome"]].forEach(function (c) {
+    [["servizio", "Servizio"], ["ingombro", "Ingombro"], ["da", "Da"], ["tappe", "Tappe"], ["a", "A"], ["quando", "Quando"], ["note", "Note"], ["nome", "Nome"]].forEach(function (c) {
       var v = String(d.get(c[0]) || "").trim();
       if (v) righe.push(c[1] + ": " + v);
     });
@@ -195,14 +195,24 @@
     setTimeout(function () { window.location.href = url; }, ridotto.matches ? 0 : 800);
   }
 
+  /* L'ingombro (27 settembre, JJ): «se selezionano sgombero solo furgone». */
+  function allineaIngombro() {
+    var sgombero = modulo.querySelector("input[name=servizio][value=Sgombero]:checked");
+    modulo.querySelectorAll("input[name=ingombro]").forEach(function (r) {
+      r.disabled = Boolean(sgombero) && r.value !== "furgone";
+      if (sgombero && r.value === "furgone") r.checked = true;
+    });
+  }
+
   if (modulo) {
+    modulo.querySelectorAll("input[name=servizio]").forEach(function (r) { r.addEventListener("change", allineaIngombro); });
     modulo.addEventListener("submit", function (e) {
       e.preventDefault();
       var d = new FormData(modulo);
       var tel = String(d.get("telefono") || "").trim(), mail = String(d.get("mail") || "").trim();
       if (!tel && !mail) { esito.textContent = "Lascia un telefono o una mail: serve per mandarti il prezzo."; return; }
       var corpo = { consenso: d.get("consenso") === "on" };
-      ["servizio", "da", "a", "tappe", "quando", "note", "nome", "telefono", "mail", "sito"].forEach(function (k) { corpo[k] = String(d.get(k) || ""); });
+      ["servizio", "ingombro", "da", "a", "tappe", "quando", "note", "nome", "telefono", "mail", "sito"].forEach(function (k) { corpo[k] = String(d.get(k) || ""); });
       var pulsante = modulo.querySelector("button[type=submit]");
       pulsante.disabled = true;
       esito.textContent = "Invio in corso…";
