@@ -19,10 +19,13 @@
   function leggibile(iso) { var d = data(iso); return GIORNI_LUNGHI[d.getUTCDay()] + " " + d.getUTCDate() + " " + MESI_LUNGHI[d.getUTCMonth()]; }
   function prese(iso) { return (dati.occupati && dati.occupati[iso]) || []; }
   function pieno(iso) { var x = prese(iso); return dati.giornata ? x.length > 0 : x.length >= 2; }
-  function fatto(g, f) {
+  function fatto(g, f, x) {
     document.getElementById("scelta").hidden = true;
     document.getElementById("pagamento").hidden = true;
-    stato.textContent = "Confermato: " + leggibile(g) + ", " + f + ". Ti ricontatto per i dettagli. Grazie!";
+    x = x || dati || {};
+    stato.textContent = "Confermato: " + leggibile(g) + ", " + f + ". Ti ricontatto per i dettagli. Grazie!" +
+      (x.tipo === "azienda" ? " A lavoro svolto riceverete la fattura elettronica, da pagare con bonifico a " + (x.giorni_pagamento || 30) + " giorni" +
+        (x.iban ? " (IBAN " + x.iban + ")" : "") + "." : "");
   }
   // ══ LA CAPARRA — 27 settembre 2026 ══ Il giorno scelto resta bloccato per
   // te; diventa confermato quando JJ vede arrivare il pagamento su PayPal.
@@ -113,7 +116,7 @@
       body: JSON.stringify({ p: p, k: k, giorno: giornoScelto, fascia: fasciaScelta }) })
       .then(function (r) { return r.json().then(function (j) { return { r: r, j: j }; }); })
       .then(function (x) {
-        if (x.r.ok) { if (x.j.stato === "caparra") paga(x.j); else fatto(x.j.giorno, x.j.fascia); return; }
+        if (x.r.ok) { if (x.j.stato === "caparra") paga(x.j); else fatto(x.j.giorno, x.j.fascia, x.j); return; }
         stato.textContent = (x.j.errore || "Non riuscito") + ".";
         b.disabled = false;
       })

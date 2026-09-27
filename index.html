@@ -253,6 +253,15 @@
           <input type="email" name="mail" autocomplete="email">
         </label>
       </div>
+      <label class="consenso"><input type="checkbox" name="azienda" id="azienda"> <span>Sono un'azienda: mi serve la fattura</span></label>
+      <div id="dati-azienda" class="dati-azienda" hidden>
+        <label class="campo">Ragione sociale <input type="text" name="ragione_sociale" autocomplete="organization"></label>
+        <div class="campi-due">
+          <label class="campo">Partita IVA <input type="text" name="piva" inputmode="numeric" placeholder="11 cifre"></label>
+          <label class="campo">Codice destinatario o PEC <input type="text" name="sdi_pec" placeholder="es. ABC1234"></label>
+        </div>
+        <label class="campo">Sede <input type="text" name="sede" autocomplete="street-address"></label>
+      </div>
       <label class="consenso"><input type="checkbox" name="consenso" required> <span>Usate i miei dati solo per mandarmi questo preventivo.</span></label>
       <label class="trappola" aria-hidden="true">Sito <input type="text" name="sito" tabindex="-1" autocomplete="off"></label>
 

@@ -204,7 +204,17 @@
     });
   }
 
+  /* Le aziende (27 settembre, JJ): «per le aziende devi per forza fare
+     fattura». I campi della fattura si aprono solo con la spunta. */
+  var spuntaAzienda = document.getElementById("azienda");
+  function allineaAzienda() {
+    var si = spuntaAzienda && spuntaAzienda.checked;
+    document.getElementById("dati-azienda").hidden = !si;
+    ["ragione_sociale", "piva", "sdi_pec", "sede"].forEach(function (n) { modulo.querySelector("[name=" + n + "]").required = si; });
+  }
+
   if (modulo) {
+    if (spuntaAzienda) spuntaAzienda.addEventListener("change", allineaAzienda);
     modulo.querySelectorAll("input[name=servizio]").forEach(function (r) { r.addEventListener("change", allineaIngombro); });
     modulo.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -212,6 +222,14 @@
       var tel = String(d.get("telefono") || "").trim(), mail = String(d.get("mail") || "").trim();
       if (!tel && !mail) { esito.textContent = "Lascia un telefono o una mail: serve per mandarti il prezzo."; return; }
       var corpo = { consenso: d.get("consenso") === "on" };
+      if (d.get("azienda") === "on") {
+        var sp = String(d.get("sdi_pec") || "").trim();
+        corpo.azienda = true;
+        corpo.ragione_sociale = String(d.get("ragione_sociale") || "");
+        corpo.piva = String(d.get("piva") || "");
+        corpo.sede = String(d.get("sede") || "");
+        if (sp.indexOf("@") >= 0) corpo.pec = sp; else corpo.sdi = sp;
+      }
       ["servizio", "ingombro", "da", "a", "tappe", "quando", "note", "nome", "telefono", "mail", "sito"].forEach(function (k) { corpo[k] = String(d.get(k) || ""); });
       var pulsante = modulo.querySelector("button[type=submit]");
       pulsante.disabled = true;

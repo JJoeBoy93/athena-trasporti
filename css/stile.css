@@ -349,3 +349,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .prenota-paga { display: grid; gap: 8px; }
 .prenota-paga-dati { word-break: break-all; }
 .prenota-copia { margin-left: 6px; padding: 2px 10px; border: 1.5px solid rgba(20, 20, 20, .35); border-radius: 8px; background: var(--carta); font: inherit; font-size: .85rem; cursor: pointer; }
+
+/* i dati della fattura (27 settembre) */
+.dati-azienda { display: grid; gap: 10px; }
+.dati-azienda[hidden] { display: none; }
