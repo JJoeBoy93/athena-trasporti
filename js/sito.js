@@ -1,4 +1,4 @@
-/* Athena Trasporti — il furgone sulla strada e il modulo del preventivo.
+/* Athena Trasporti — le schede, il furgone sulla strada e il modulo del preventivo.
    Niente richieste a server: il modulo compone il messaggio e apre WhatsApp. */
 (function () {
   "use strict";
@@ -6,8 +6,9 @@
   var ridotto = window.matchMedia("(prefers-reduced-motion: reduce)");
   var radice = document.documentElement;
 
-  /* ---------- La strada: il furgone segue lo scorrimento ---------- */
-  var sezione = document.getElementById("strada");
+  /* ---------- Il furgone: percorre la strada quando si apre la Home ---------- */
+  var furgoneParte = function () {};
+  var furgoneFerma = function () {};
   var percorso = document.getElementById("percorso");
   var oro = document.getElementById("percorso-oro");
   var furgone = document.getElementById("furgone");
@@ -15,11 +16,11 @@
   var ruote = [document.getElementById("ruota-dietro"), document.getElementById("ruota-davanti")];
   var posRuote = ["translate(-36 -10)", "translate(36 -10)"];
 
-  if (sezione && percorso && furgone && percorso.getTotalLength) {
+  if (percorso && furgone && percorso.getTotalLength) {
     var L = percorso.getTotalLength();
     var inizio = 50, fine = L - 85;   // il furgone resta dentro la strada
     var N = 240, tabella = [];
-    var GRADI = 180 / Math.PI, INCLINAZIONE = 30;
+    var GRADI = 180 / Math.PI, INCLINAZIONE = 30, DURATA = 3600;
 
     // I punti della strada si calcolano una volta sola: poi solo letture.
     for (var i = 0; i <= N; i++) {
@@ -31,11 +32,9 @@
     }
     oro.style.strokeDasharray = L + " " + L;
 
-    var obiettivo = 0, attuale = 0, inCorsa = false, attivo = false;
+    var limita = function (v, min, max) { return v < min ? min : v > max ? max : v; };
 
-    function limita(v, min, max) { return v < min ? min : v > max ? max : v; }
-
-    function disegna(t) {
+    var disegna = function (t) {
       var f = t * N, k = Math.floor(f), r = f - k;
       var A = tabella[k], B = tabella[Math.min(N, k + 1)];
       var x = A.x + (B.x - A.x) * r, y = A.y + (B.y - A.y) * r, s = A.s + (B.s - A.s) * r;
@@ -50,50 +49,122 @@
       ruote[0].setAttribute("transform", posRuote[0] + " rotate(" + giro + ")");
       ruote[1].setAttribute("transform", posRuote[1] + " rotate(" + giro + ")");
       oro.style.strokeDashoffset = (L - s).toFixed(1);
-    }
+    };
 
-    function leggi() {
-      var r = sezione.getBoundingClientRect();
-      var corsa = r.height - window.innerHeight;
-      obiettivo = corsa > 0 ? limita(-r.top / corsa, 0, 1) : 0;
-    }
+    var corsa = 0;
+    var dolce = function (t) { return t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; };
 
-    function passo() {
-      // un po' d'inerzia: il furgone raggiunge la posizione con dolcezza
-      var d = obiettivo - attuale;
-      attuale = Math.abs(d) < .0005 ? obiettivo : attuale + d * .22;
-      disegna(attuale);
-      if (attuale !== obiettivo && attivo) {
-        requestAnimationFrame(passo);
-      } else {
-        inCorsa = false;
-      }
-    }
-
-    function suScorrimento() {
-      if (!attivo) return;
-      leggi();
-      if (!inCorsa) { inCorsa = true; requestAnimationFrame(passo); }
-    }
-
-    function accendi() {
-      attivo = true;
+    furgoneParte = function () {
+      if (ridotto.matches) return;          // movimento ridotto: resta il disegno fermo
       radice.classList.add("anima");
-      leggi(); attuale = obiettivo; disegna(attuale);
-    }
+      cancelAnimationFrame(corsa);
+      var t0 = null;
+      var passo = function (ora) {
+        if (t0 === null) t0 = ora;
+        var t = limita((ora - t0) / DURATA, 0, 1);
+        disegna(dolce(t));
+        if (t < 1) corsa = requestAnimationFrame(passo);
+      };
+      disegna(0);
+      corsa = requestAnimationFrame(passo);
+    };
+    furgoneFerma = function () { cancelAnimationFrame(corsa); };
 
-    function spegni() {
-      // movimento ridotto: si ferma e resta un disegno fermo
-      attivo = false;
-      radice.classList.remove("anima");
-    }
+    var cambiaMoto = function () {
+      if (ridotto.matches) { furgoneFerma(); radice.classList.remove("anima"); }
+    };
+    if (ridotto.addEventListener) ridotto.addEventListener("change", cambiaMoto);
+    else if (ridotto.addListener) ridotto.addListener(cambiaMoto);
+  }
 
-    window.addEventListener("scroll", suScorrimento, { passive: true });
-    window.addEventListener("resize", suScorrimento, { passive: true });
-    var cambia = function () { ridotto.matches ? spegni() : accendi(); };
-    if (ridotto.addEventListener) ridotto.addEventListener("change", cambia);
-    else if (ridotto.addListener) ridotto.addListener(cambia);
-    if (!ridotto.matches) accendi();
+  /* ---------- Le schede ---------- */
+  var binario = document.getElementById("binario");
+  var barra = document.getElementById("barra");
+  var schede = binario ? Array.prototype.slice.call(binario.querySelectorAll(".scheda")) : [];
+  var linguette = barra ? Array.prototype.slice.call(barra.querySelectorAll("a[data-scheda]")) : [];
+  var attuale = -1;
+
+  var indiceDi = function (id) {
+    for (var i = 0; i < schede.length; i++) if (schede[i].id === id) return i;
+    return -1;
+  };
+
+  var segna = function (i) {
+    if (i === attuale) return;
+    var prima = attuale;
+    attuale = i;
+    linguette.forEach(function (a, k) {
+      if (k === i) a.setAttribute("aria-current", "true");
+      else a.removeAttribute("aria-current");
+    });
+    // la linguetta aperta al centro della barra, se la barra scorre
+    var a = linguette[i];
+    if (a && barra.scrollWidth > barra.clientWidth) {
+      barra.scrollTo({ left: a.offsetLeft - (barra.clientWidth - a.offsetWidth) / 2, behavior: ridotto.matches ? "auto" : "smooth" });
+    }
+    var id = schede[i].id;
+    if (location.hash !== "#" + id) history.replaceState(null, "", "#" + id);
+    if (id === "home") furgoneParte();
+    else if (prima === indiceDi("home")) furgoneFerma();
+  };
+
+  var mira = -1, miraScade = 0;   // durante un cambio di scheda animato, le schede di passaggio non contano
+  var vai = function (i, subito) {
+    if (i < 0 || i >= schede.length) return;
+    mira = i;
+    clearTimeout(miraScade);
+    miraScade = setTimeout(function () { mira = -1; }, 1200);
+    binario.scrollTo({ left: i * binario.clientWidth, behavior: subito || ridotto.matches ? "auto" : "smooth" });
+    segna(i);
+  };
+
+  if (binario && schede.length && linguette.length) {
+    // clic su un link interno (#servizi, #preventivo…): si apre la scheda, senza saltare la pagina
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest('a[href^="#"]');
+      if (!a) return;
+      var i = indiceDi(a.getAttribute("href").slice(1));
+      if (i < 0) return;
+      e.preventDefault();
+      vai(i);
+    });
+
+    // frecce della tastiera sulla barra
+    barra.addEventListener("keydown", function (e) {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      var i = Math.max(0, Math.min(schede.length - 1, attuale + (e.key === "ArrowRight" ? 1 : -1)));
+      vai(i);
+      linguette[i].focus();
+      e.preventDefault();
+    });
+
+    // scorrendo col dito di lato: la scheda che si ferma al centro diventa quella aperta
+    var attesa = 0;
+    binario.addEventListener("scroll", function () {
+      cancelAnimationFrame(attesa);
+      attesa = requestAnimationFrame(function () {
+        var i = Math.round(binario.scrollLeft / binario.clientWidth);
+        if (mira >= 0) {
+          if (Math.abs(binario.scrollLeft - mira * binario.clientWidth) > 2) return;
+          mira = -1;
+        }
+        segna(i);
+      });
+    }, { passive: true });
+
+    // girando il telefono si resta sulla stessa scheda
+    window.addEventListener("resize", function () {
+      binario.scrollTo({ left: attuale * binario.clientWidth, behavior: "auto" });
+    });
+
+    // tasto indietro o link con #: si va alla scheda giusta
+    window.addEventListener("hashchange", function () {
+      var i = indiceDi(location.hash.slice(1));
+      if (i >= 0 && i !== attuale) vai(i);
+    });
+
+    var partenza = indiceDi(location.hash.slice(1));
+    vai(partenza < 0 ? 0 : partenza, true);
   }
 
   /* ---------- Il preventivo: compone il messaggio e apre WhatsApp ---------- */

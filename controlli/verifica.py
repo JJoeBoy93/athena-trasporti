@@ -27,6 +27,7 @@ PIVA = "09546240962"
 # (si apre solo se lo si tocca), non una risorsa caricata dalla pagina
 JJAVIS = "https://jjoeboy93.github.io/JJA-VIS/"
 PESO_MAX = 1.5 * 1024 * 1024
+SCHEDE = ["home", "servizi", "mezzi", "preventivo", "contatti"]
 
 # Le parole vietate sono spezzate, così questo file non le contiene.
 VIETATE = ["Via " + "Gro" + "ane", "Gro" + "ane"]
@@ -247,6 +248,13 @@ def main():
     punto(peso < PESO_MAX,
           "6. peso totale della pagina %.0f kB (limite %.0f kB)" % (peso / 1024, PESO_MAX / 1024),
           elenco)
+
+    # 7. Le cinque schede: una sezione con l'id giusto e un link nella barra per ciascuna
+    ids = {a.get("id") for t, a in let.tag if t == "section"}
+    link_barra = {a.get("href") for t, a in let.tag if t == "a" and a.get("data-scheda")}
+    manca = ["manca la scheda #" + s for s in SCHEDE if s not in ids]
+    manca += ["manca nella barra il link #" + s for s in SCHEDE if "#" + s not in link_barra]
+    punto(not manca, "7. cinque schede (%s), ognuna con il suo indirizzo e il suo link nella barra" % ", ".join(SCHEDE), manca)
 
     ok = all(risultati)
     print("\n%s: superati %d controlli su %d." % ("Tutto a posto" if ok else "Qualcosa non va",

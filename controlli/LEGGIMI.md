@@ -35,3 +35,18 @@ un'automazione (`python3 controlli/verifica.py && echo ok`).
 6. Il peso totale della pagina (HTML + CSS + JS + font + immagini) è sotto
    1,5 MB. Per prudenza conta tutte le varianti di un'immagine (WebP e
    PNG/JPG), anche se il browser ne scarica una sola.
+7. Ci sono le cinque schede (`#home`, `#servizi`, `#mezzi`, `#preventivo`,
+   `#contatti`), ognuna una `<section>` con quell'`id` e un link nella barra
+   delle schede.
+
+## Altezza delle schede sul telefono
+
+`verifica.py` usa solo la libreria standard e non apre un browser. L'altezza
+di ogni scheda a 390×844 si misura a parte con la skill `webapp-testing`
+(Playwright), per esempio:
+
+```sh
+python3 .claude/skills/webapp-testing/scripts/with_server.py \
+  --server "exec python3 -m http.server 8766 >/dev/null 2>&1" --port 8766 -- python3 controlli/altezze.py
+```
+
