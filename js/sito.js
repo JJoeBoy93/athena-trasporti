@@ -167,6 +167,23 @@
     vai(partenza < 0 ? 0 : partenza, true);
   }
 
+  /* ---------- Condividi il sito — 27 settembre 2026 ----------
+     JJ: «manca il tasto per condividere il link se vogliono mandarlo a
+     qualcuno o se vogliono sponsorizzarmi». Sul telefono si apre il menu di
+     condivisione del sistema (WhatsApp, Telegram, SMS…); dove non c'e', il
+     link si copia. L'indirizzo e' quello del sito, senza la scheda aperta. */
+  var INDIRIZZO = location.origin + location.pathname;
+  document.querySelectorAll("[data-condividi]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var dove = document.getElementById("condividi-esito");
+      var dati = { title: "Athena Trasporti", text: "Consegne conto terzi, consegne urgenti e sgomberi da Limbiate:", url: INDIRIZZO };
+      if (navigator.share) { navigator.share(dati).catch(function () {}); return; }
+      (navigator.clipboard ? navigator.clipboard.writeText(INDIRIZZO) : Promise.reject())
+        .then(function () { if (dove) dove.textContent = "Link copiato: incollalo dove vuoi."; else alert("Link copiato: " + INDIRIZZO); },
+              function () { prompt("Copia il link:", INDIRIZZO); });
+    });
+  });
+
   /* ---------- Il preventivo ----------
      27 settembre 2026: la richiesta va alla porta di JJA-VIS, che calcola il
      percorso e la manda a JJ su Telegram; il prezzo al cliente lo manda JJ,

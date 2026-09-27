@@ -26,6 +26,10 @@ PIVA = "09546240962"
 # la pagina di JJA-VIS, chiesta da DATI.md nel piè di pagina: è un link normale
 # (si apre solo se lo si tocca), non una risorsa caricata dalla pagina
 JJAVIS = "https://jjoeboy93.github.io/JJA-VIS/"
+# il profilo Instagram della ditta, chiesto da JJ il 27 settembre 2026
+# («le pagine devono scoppiare di follower»): un link che si apre solo se lo
+# si tocca, come quello di JJA-VIS. Solo questo, non instagram.com in genere.
+INSTAGRAM = "https://www.instagram.com/athenatrasporti/"
 PESO_MAX = 1.5 * 1024 * 1024
 SCHEDE = ["home", "servizi", "mezzi", "preventivo", "contatti"]
 
@@ -49,7 +53,7 @@ def link_ammesso(url):
     parti = urlsplit(u)
     if parti.scheme == "https" and parti.netloc == "wa.me":
         return True
-    return u == JJAVIS
+    return u in (JJAVIS, INSTAGRAM)
 
 
 class Lettore(HTMLParser):
@@ -180,7 +184,7 @@ def main():
 
     # 1. Niente risorse da domini esterni
     punto(not esterni and not mancanti,
-          "1. nessuna risorsa (stile, script, font, immagine) da domini esterni; link solo wa.me, tel:, mailto: (più la pagina di JJA-VIS chiesta da DATI.md)",
+          "1. nessuna risorsa (stile, script, font, immagine) da domini esterni; link solo wa.me, tel:, mailto: (più la pagina di JJA-VIS e il profilo Instagram, chiesti in DATI.md)",
           esterni + ["file mancante: " + m for m in mancanti])
 
     # 2. P.IVA nel piè di pagina; niente via, parola vietata o codice fiscale in nessun file

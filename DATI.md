@@ -46,3 +46,15 @@ Il titolare sviluppa **JJA-VIS**, un assistente personale; il sito della ditta
 - `icona-512.png` — per favicon / icona
 - `mezzi-sprinter-panda.jpg` — foto vera dei due mezzi, di fronte, targhe già
   coperte: va nella sezione dei mezzi
+
+## Instagram e il tasto Condividi (27 settembre 2026)
+
+- profilo **@athenatrasporti** (account professionale): link nei Contatti,
+  https://www.instagram.com/athenatrasporti/ — JJ: «le pagine devono
+  scoppiare di follower». È l'unico link esterno aggiunto oltre a JJA-VIS;
+  `controlli/verifica.py` ammette solo questo indirizzo esatto
+- **Condividi**: tastino tondo in alto a destra nella Home e blocco
+  «Consiglia Athena Trasporti» nei Contatti. JJ: «manca il tasto per
+  condividere il link se vogliono mandarlo a qualcuno o se vogliono
+  sponsorizzarmi». Sul telefono apre il menu di condivisione del sistema;
+  dove non c'è, copia il link

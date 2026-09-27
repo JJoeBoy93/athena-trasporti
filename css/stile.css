@@ -357,3 +357,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 /* il bonifico per chi non ha PayPal (27 settembre) */
 .prenota-bonifico { display: grid; gap: 6px; border-top: 1px solid rgba(20, 20, 20, .15); padding-top: 10px; margin-top: 4px; }
 .prenota-bonifico[hidden] { display: none; }
+
+/* condividere il sito (27 settembre) */
+.scheda-home .dentro { position: relative; }
+.condividi-tondo { position: absolute; top: 0; right: 12px; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid rgba(20, 20, 20, .35); background: var(--carta); color: var(--nero); display: grid; place-items: center; cursor: pointer; padding: 0; }
+.condividi-tondo .icona { width: 22px; height: 22px; margin: 0; }
+.consiglia { margin-top: 18px; padding: 14px; border: 1.5px solid rgba(122, 97, 22, .3); border-radius: 12px; background: var(--carta); }
+.consiglia h3 { margin: 0 0 4px; font-family: var(--titoli); }
+.consiglia p { margin: 0 0 10px; }
+.consiglia .pulsante .icona { margin-right: 6px; }
+.icona-tratto { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
