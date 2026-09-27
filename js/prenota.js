@@ -21,7 +21,28 @@
   function pieno(iso) { var x = prese(iso); return dati.giornata ? x.length > 0 : x.length >= 2; }
   function fatto(g, f) {
     document.getElementById("scelta").hidden = true;
-    stato.textContent = "Prenotato: " + leggibile(g) + ", " + f + ". Ti ricontatto per i dettagli. Grazie!";
+    document.getElementById("pagamento").hidden = true;
+    stato.textContent = "Confermato: " + leggibile(g) + ", " + f + ". Ti ricontatto per i dettagli. Grazie!";
+  }
+  // ══ LA CAPARRA — 27 settembre 2026 ══ Il giorno scelto resta bloccato per
+  // te; diventa confermato quando JJ vede arrivare il pagamento su PayPal.
+  function paga(x) {
+    document.getElementById("scelta").hidden = true;
+    stato.textContent = "";
+    document.getElementById("paga-titolo").textContent = "Giorno bloccato: " + leggibile(x.giorno) + ", " + x.fascia;
+    document.getElementById("paga-cosa").textContent = x.tutto
+      ? "Per confermarlo paga " + x.caparra + " € (l'intero importo) con PayPal."
+      : "Per confermarlo paga la caparra di " + x.caparra + " € con PayPal. Il resto (" + (dati.prezzo - x.caparra) + " €) si paga prima dello scarico.";
+    document.getElementById("paga-mail").textContent = x.paypal;
+    document.getElementById("paga-causale").textContent = x.causale;
+    document.getElementById("paga-regole").textContent = x.tutto ? "" :
+      "È una caparra confirmatoria (art. 1385 del Codice civile): se rinunci resta ad Athena Trasporti; se rinuncia Athena Trasporti, ti restituisce il doppio.";
+    document.getElementById("copia").onclick = function () {
+      var b = this;
+      (navigator.clipboard ? navigator.clipboard.writeText(x.paypal) : Promise.reject())
+        .then(function () { b.textContent = "Copiato"; }, function () { b.textContent = "Tieni premuto l'indirizzo"; });
+    };
+    document.getElementById("pagamento").hidden = false;
   }
 
   function disegnaFasce() {
@@ -77,6 +98,7 @@
       document.getElementById("prezzo").textContent = dati.prezzo;
       document.getElementById("riepilogo").hidden = false;
       if (dati.stato === "confermato") { fatto(dati.giorno, dati.fascia); return; }
+      if (dati.stato === "caparra") { paga(dati); return; }
       stato.textContent = "";
       document.getElementById("nota-durata").textContent = dati.giornata
         ? "Questo lavoro prende la giornata intera: scegli un giorno libero." : "I giorni grigi sono già pieni.";
@@ -91,7 +113,7 @@
       body: JSON.stringify({ p: p, k: k, giorno: giornoScelto, fascia: fasciaScelta }) })
       .then(function (r) { return r.json().then(function (j) { return { r: r, j: j }; }); })
       .then(function (x) {
-        if (x.r.ok) { fatto(x.j.giorno, x.j.fascia); return; }
+        if (x.r.ok) { if (x.j.stato === "caparra") paga(x.j); else fatto(x.j.giorno, x.j.fascia); return; }
         stato.textContent = (x.j.errore || "Non riuscito") + ".";
         b.disabled = false;
       })

@@ -344,3 +344,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .prenota-giorno:disabled { opacity: .3; cursor: not-allowed; }
 .prenota-fasce { grid-template-columns: repeat(2, 1fr); }
 .prenota #conferma { width: 100%; }
+
+/* la caparra (27 settembre) */
+.prenota-paga { display: grid; gap: 8px; }
+.prenota-paga-dati { word-break: break-all; }
+.prenota-copia { margin-left: 6px; padding: 2px 10px; border: 1.5px solid rgba(20, 20, 20, .35); border-radius: 8px; background: var(--carta); font: inherit; font-size: .85rem; cursor: pointer; }
