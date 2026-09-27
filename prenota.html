@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scegli il giorno — Athena Trasporti</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#faf6ec">
+<link rel="icon" href="img/icona-32.png" sizes="32x32" type="image/png">
+<link rel="preload" href="font/playfair-display.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/stile.css">
+</head>
+<body class="pagina-prenota">
+<main class="dentro prenota">
+  <a href="./" class="prenota-logo"><picture>
+    <source srcset="img/logo.webp" type="image/webp">
+    <img src="img/logo.png" width="781" height="503" alt="Athena Trasporti di Ardito Jacopo Joe">
+  </picture></a>
+  <h1>Scegli il giorno</h1>
+  <p class="esito" id="stato" role="status" aria-live="polite">Carico il tuo preventivo…</p>
+
+  <section id="riepilogo" class="prenota-riepilogo" hidden>
+    <p id="tratta"></p>
+    <p class="prenota-prezzo"><span id="prezzo"></span> €</p>
+  </section>
+
+  <section id="scelta" hidden>
+    <h2 class="prenota-sotto">Il giorno</h2>
+    <p class="prenota-nota" id="nota-durata"></p>
+    <div class="prenota-giorni" id="giorni"></div>
+    <div id="fasce-box" hidden>
+      <h2 class="prenota-sotto">Quando</h2>
+      <div class="scelte prenota-fasce" id="fasce"></div>
+    </div>
+    <button type="button" class="pulsante pulsante-oro azione-larga" id="conferma" disabled>Conferma</button>
+  </section>
+
+  <p class="oppure">Domande? Scrivi o chiama al <a class="collegamento" href="https://wa.me/393775947995">377 594 7995</a>.</p>
+</main>
+<script src="js/prenota.js" defer></script>
+</body>
+</html>

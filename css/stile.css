@@ -326,3 +326,21 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
 /* ingombro: le scelte spente con lo sgombero */
 .scelte input:disabled + span { opacity: .35; }
+
+/* la pagina per scegliere il giorno (prenota.html, 27 settembre) */
+.prenota { max-width: 560px; margin: 0 auto; padding: 20px 16px 40px; display: grid; gap: 14px; }
+.prenota h1 { font-family: var(--titoli); margin: 0; }
+.prenota-logo img { width: 150px; height: auto; display: block; }
+.prenota-riepilogo { background: var(--carta); border: 1.5px solid rgba(20, 20, 20, .15); border-radius: 12px; padding: 12px 14px; }
+.prenota-riepilogo p { margin: 0; }
+.prenota-prezzo { font-family: var(--titoli); font-size: 1.8rem; color: var(--oro-testo); }
+.prenota-sotto { font-size: 1rem; margin: 6px 0 0; }
+.prenota-nota { margin: 0; font-size: .9rem; }
+.prenota-giorni { display: grid; grid-template-columns: repeat(auto-fill, minmax(62px, 1fr)); gap: 8px; }
+.prenota-giorno { display: grid; justify-items: center; padding: 6px 2px; min-height: 64px; border: 1.5px solid rgba(20, 20, 20, .35); border-radius: 10px; background: var(--carta); color: var(--nero); font: inherit; cursor: pointer; }
+.prenota-giorno small { font-size: .72rem; }
+.prenota-giorno strong { font-size: 1.15rem; }
+.prenota-giorno[aria-pressed="true"] { background: var(--nero); color: var(--avorio); box-shadow: inset 0 -3px 0 var(--oro); }
+.prenota-giorno:disabled { opacity: .3; cursor: not-allowed; }
+.prenota-fasce { grid-template-columns: repeat(2, 1fr); }
+.prenota #conferma { width: 100%; }
