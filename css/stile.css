@@ -367,3 +367,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .consiglia p { margin: 0 0 10px; }
 .consiglia .pulsante .icona { margin-right: 6px; }
 .icona-tratto { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+
+/* il tracciamento (traccia.html, 12/10) */
+.traccia-cerca { display: grid; gap: 8px; }
+.traccia-cerca input { font: inherit; font-size: 1.2rem; letter-spacing: .08em; text-transform: uppercase; padding: 10px 12px; border: 1.5px solid rgba(20, 20, 20, .35); border-radius: 10px; background: var(--carta); color: var(--nero); }
+.traccia-passi { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
+.traccia-passi li { opacity: .7; }
+.traccia-passi li.adesso { opacity: 1; font-weight: 700; }
