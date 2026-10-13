@@ -18,7 +18,16 @@
     $("stato").textContent = "Cerco…";
     fetch(PORTA + "?c=" + encodeURIComponent(c)).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
       .then(function (x) {
-        if (!x.ok) { $("stato").textContent = x.d && x.d.no === "non trovata" ? "Non trovo una spedizione con questo codice: controlla di averlo scritto giusto. Se l'hai appena ricevuta, potremmo non averla ancora presa in carico." : "Il codice non va: controllalo."; return; }
+        if (!x.ok) {
+          // non è nostra: se la forma della LDV dice di chi sembra, lo diciamo (12/10). Chi la consegna davvero qui (l'ultimo
+          // miglio) può essere un altro corriere: lo sa il sito di chi te l'ha spedita
+          var chi = x.d && x.d.corriere;
+          $("stato").textContent = x.d && x.d.no === "non trovata"
+            ? (chi ? "Questa non è una spedizione di Athena Trasporti: dalla forma sembra una spedizione " + chi + ". Seguila sul sito di " + chi + " o nella mail del negozio: in Italia la consegna può farla anche un altro corriere."
+                   : "Non trovo una spedizione con questo codice: controlla di averlo scritto giusto. Se l'hai appena ricevuta, potremmo non averla ancora presa in carico.")
+            : "Il codice non va: controllalo.";
+          return;
+        }
         var d = x.d, ultimo = d.stati[d.stati.length - 1];
         $("stato").textContent = "";
         $("titolo").textContent = ultimo.emoji + " " + ultimo.stato + (d.comune ? " · " + d.comune : "");
