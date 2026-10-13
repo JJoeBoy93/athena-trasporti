@@ -9,15 +9,16 @@
     catch (e) { return iso; }
   };
   function cerca(c) {
-    c = String(c || "").trim().toUpperCase().replace(/\s/g, "");
+    c = String(c || "").trim().toUpperCase().replace(/[\s()]/g, "");
     if (/^AT[A-Z0-9]{5}$/.test(c)) c = "AT-" + c.slice(2);
     $("codice").value = c;
     $("risultato").hidden = true;
-    if (!/^AT-[A-Z0-9]{5}$/.test(c)) { $("stato").textContent = "Il codice è fatto così: AT- e cinque lettere o numeri."; return; }
+    // la lettera di vettura (lettere e numeri, da 8 a 34) o il codice AT- (12/10)
+    if (!/^AT-[A-Z0-9]{5}$/.test(c) && !/^[A-Z0-9-]{8,40}$/.test(c)) { $("stato").textContent = "Scrivi la lettera di vettura (lettere e numeri) o il codice AT- che ti abbiamo mandato."; return; }
     $("stato").textContent = "Cerco…";
     fetch(PORTA + "?c=" + encodeURIComponent(c)).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
       .then(function (x) {
-        if (!x.ok) { $("stato").textContent = x.d && x.d.no === "non trovata" ? "Non trovo una spedizione con questo codice: controlla di averlo scritto giusto." : "Il codice non va: controllalo."; return; }
+        if (!x.ok) { $("stato").textContent = x.d && x.d.no === "non trovata" ? "Non trovo una spedizione con questo codice: controlla di averlo scritto giusto. Se l'hai appena ricevuta, potremmo non averla ancora presa in carico." : "Il codice non va: controllalo."; return; }
         var d = x.d, ultimo = d.stati[d.stati.length - 1];
         $("stato").textContent = "";
         $("titolo").textContent = ultimo.emoji + " " + ultimo.stato + (d.comune ? " · " + d.comune : "");
