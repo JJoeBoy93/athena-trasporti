@@ -374,3 +374,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .traccia-passi { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
 .traccia-passi li { opacity: .7; }
 .traccia-passi li.adesso { opacity: 1; font-weight: 700; }
+
+/* chi c'è dietro (16/10) */
+.chi-dietro { margin: 28px 0 8px; }
+.chi-dietro h3 { margin-bottom: 6px; }
